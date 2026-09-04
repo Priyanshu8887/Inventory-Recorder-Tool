@@ -11,3 +11,4 @@ urlpatterns = [
     path("", include(router.urls)),
     path("reorder", reorder_dashboard, name="reorder-dashboard"),
 ]
+

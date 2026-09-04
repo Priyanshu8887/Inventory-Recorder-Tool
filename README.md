@@ -93,11 +93,17 @@ Products with `avg_daily_sales = 0` are excluded — there's no sell-through rat
 
 ```
 Warehouse      name, location
-Product        name, sku, avg_daily_sales, lead_time_days, safety_stock, reorder_quantity
+Product      name, sku, avg_daily_sales, lead_time_days, safety_stock
 StockLevel     product → Warehouse, quantity     [unique_together: product + warehouse]
 ```
 
-The four fields added to Product beyond name/SKU (`avg_daily_sales`, `lead_time_days`, `safety_stock`, `reorder_quantity`) are exactly the inputs the ROP formula needs. Nothing more.
+The three fields added to Product beyond name/SKU (`avg_daily_sales`, `lead_time_days`, `safety_stock`) are the inputs used to calculate the dynamic order quantity:
+
+```
+Order Quantity = avg_daily_sales × lead_time_days + safety_stock
+```
+
+Because inventory quantities are whole units, fractional results are rounded up.
 
 ---
 
@@ -127,7 +133,7 @@ All endpoints return JSON.
     "avg_daily_sales": 15.0,
     "lead_time_days": 7,
     "safety_stock": 30,
-    "reorder_quantity": 300,
+    "reorder_quantity": 135,
     "total_stock": 30,
     "reorder_point": 135.0,
     "days_remaining": 2.0,
