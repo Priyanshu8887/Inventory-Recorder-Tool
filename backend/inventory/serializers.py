@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Warehouse, Product, StockLevel
+from .reorder import calculate_reorder_quantity
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
@@ -9,9 +10,17 @@ class WarehouseSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    reorder_quantity = serializers.SerializerMethodField()
+
+    def get_reorder_quantity(self, product):
+        return calculate_reorder_quantity(product)
+
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = [
+            "id", "name", "sku", "avg_daily_sales", "lead_time_days",
+            "safety_stock", "reorder_quantity", "created_at",
+        ]
 
 
 class StockLevelSerializer(serializers.ModelSerializer):

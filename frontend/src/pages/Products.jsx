@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { api } from "../api";
 
 const EMPTY_FORM = {
-  name: "", sku: "",
-  avg_daily_sales: "", lead_time_days: "", safety_stock: "", reorder_quantity: "",
+  name: "", sku: "", avg_daily_sales: "", lead_time_days: "", safety_stock: "",
 };
 
 export default function Products() {
@@ -25,7 +24,6 @@ export default function Products() {
       avg_daily_sales: parseFloat(form.avg_daily_sales),
       lead_time_days: parseInt(form.lead_time_days, 10),
       safety_stock: parseInt(form.safety_stock, 10),
-      reorder_quantity: parseInt(form.reorder_quantity, 10),
     };
     try {
       if (editing) {
@@ -48,7 +46,6 @@ export default function Products() {
       avg_daily_sales: p.avg_daily_sales,
       lead_time_days: p.lead_time_days,
       safety_stock: p.safety_stock,
-      reorder_quantity: p.reorder_quantity,
     });
   };
 
@@ -103,12 +100,10 @@ export default function Products() {
               <input name="safety_stock" type="number" min="0"
                      value={form.safety_stock} onChange={handleChange} required />
             </div>
-            <div className="field" style={{ flex: "1 1 120px" }}>
-              <label>Reorder Qty *</label>
-              <input name="reorder_quantity" type="number" min="1"
-                     value={form.reorder_quantity} onChange={handleChange} required />
-            </div>
           </div>
+          <p style={{ color: "#64748b", fontSize: 12, marginTop: 0 }}>
+            Order quantity is calculated automatically as average daily sales × lead time + safety stock.
+          </p>
           <div style={{ display: "flex", gap: 8 }}>
             <button type="submit" className="btn btn-primary">
               {editing ? "Save Changes" : "Add Product"}
@@ -131,7 +126,7 @@ export default function Products() {
             <thead>
               <tr>
                 <th>SKU</th><th>Name</th><th>Daily Sales</th>
-                <th>Lead (days)</th><th>Safety Stock</th><th>Reorder Qty</th><th></th>
+                <th>Lead (days)</th><th>Safety Stock</th><th>Order Qty</th><th></th>
               </tr>
             </thead>
             <tbody>

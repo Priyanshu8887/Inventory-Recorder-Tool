@@ -14,6 +14,16 @@ Products with avg_daily_sales == 0 are excluded (no sell-through data to reason 
 """
 
 from decimal import Decimal
+from decimal import ROUND_CEILING
+
+
+def calculate_reorder_quantity(product) -> int:
+    """Return the whole-unit order quantity from the product's reorder inputs."""
+    quantity = (
+        Decimal(str(product.avg_daily_sales)) * product.lead_time_days
+        + product.safety_stock
+    )
+    return int(quantity.to_integral_value(rounding=ROUND_CEILING))
 
 
 def compute_reorder_status(product, total_stock: int) -> dict | None:
@@ -37,6 +47,7 @@ def compute_reorder_status(product, total_stock: int) -> dict | None:
         "total_stock": total_stock,
         "reorder_point": float(round(reorder_point, 1)),
         "days_remaining": float(round(days_remaining, 1)),
+        "reorder_quantity": calculate_reorder_quantity(product),
         "needs_reorder": needs_reorder,
         "urgency": urgency,
     }

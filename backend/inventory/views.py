@@ -69,7 +69,6 @@ def reorder_dashboard(request):
             "avg_daily_sales": float(product.avg_daily_sales),
             "lead_time_days": product.lead_time_days,
             "safety_stock": product.safety_stock,
-            "reorder_quantity": product.reorder_quantity,
             "stock_by_warehouse": [
                 {"warehouse": sl.warehouse.name, "quantity": sl.quantity}
                 for sl in stock_levels

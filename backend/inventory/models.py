@@ -23,9 +23,6 @@ class Product(models.Model):
     safety_stock = models.PositiveIntegerField(
         help_text="Buffer units to hold above the reorder point"
     )
-    reorder_quantity = models.PositiveIntegerField(
-        help_text="Units to order when restocking"
-    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
